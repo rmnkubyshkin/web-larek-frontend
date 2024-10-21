@@ -98,10 +98,63 @@ export interface AppStateSettings {
     onChange: (changed: AppStateChanges) => void;
 }
 
-export interface EventEmitter {
-    events : EventsMap;
+export interface ModalData<H, C> {
+    header?: H;
+    content: C;
+    message?: string;
+    isActive: boolean;
+    isError?: boolean;
+}
 
-    on(event:string, handler: EventHandler): void;
-    emit(event:string, data: object): void;
+export interface ModalSettings<H, C> {
+    close: string;
+    header: string;
+    content: string;
+    footer: string;
+    message: string;
+    headerView: IView<H>;
+    contentView: IView<C>;
+    actions: HTMLElement[];
+    activeClass: string;
+    messageErrorClass: string;
+    onOpen?: () => void;
+    onClose?: () => void;
+}
+
+export interface IView<T, S = object> {
+    element: HTMLElement;
+    copy(settings?: S): IView<T>;
+    render(data?: Partial<T>): HTMLElement;
+}
+
+interface IEvents {
+    on<T extends object>(event: string, callback: (data: T) => void): void;
+    emit<T extends object>(event: string, data?: T): void;
+    trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void;
+}
+
+type Subscriber = Function;
+
+type EmitterEvent = {
+    eventName: string,
+    data: unknown
+};
+
+export class EventEmitter implements IEvents {
+    events: EventsMap;
+
+    constructor() {
+        this.events = new Map<string, Set<EventHandler>>;
+    }
+
+    on<T extends object>(event: string, callback: (data: T) => void) {
+    }
+
+    emit<T extends object>(event: string, data?: T) {
+    }
+
+    trigger<T extends object>(event: string, context?: Partial<T>): (data: T) => void {
+        return;
+    }
 }
 
