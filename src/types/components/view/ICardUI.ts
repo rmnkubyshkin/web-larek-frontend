@@ -1,5 +1,6 @@
+import {IMainUI} from "./IMainUI";
 
-export interface CardUI {
+export interface ICardUI extends IMainUI{
     title: string;
     image: string;
     description: string;
