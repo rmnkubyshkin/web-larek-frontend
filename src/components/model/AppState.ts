@@ -7,24 +7,15 @@ import {
     IOrderResult,
     IAppState,
     IEvents,
-    IView,
-    IModal,
-    IModalSettings, IProductSettings, AppStateChanges
+    IProductSettings,
+    AppStateChanges
 } from '../../types/components/model/IAppState';
 import {IMainUI} from "../../types/components/view/IMainUI";
+import {MainUI} from "../view/MainUI";
 
 export type EventData = object;
 export type EventHandler = (args: EventData) => void;
 export type EventsMap = Map<string, Set<EventHandler>>;
-
-export class Product extends ProductSettings implements IProduct {
-    id: string;
-    description: string;
-    image: string;
-    title: string;
-    category: string;
-    price: number;
-}
 
 class ProductSettings implements IProductSettings {
     category: string;
@@ -37,6 +28,15 @@ class ProductSettings implements IProductSettings {
 
     onChange(changed: AppStateChanges): void {
     }
+}
+
+export class Product extends ProductSettings implements IProduct {
+    id: string;
+    description: string;
+    image: string;
+    title: string;
+    category: string;
+    price: number;
 }
 
 export class Profile implements IProfile {
@@ -79,32 +79,32 @@ export class AppState implements IAppState {
     isOrderReady: boolean;
     validationError: string | null;
 
-    openModal(modal: AppStateModals) {
+    openModal(modal: AppStateModals): void {
 
     }
 
-    selectProduct(id: string) {
-        return "";
+    selectProduct(id: string): void {
     }
 
-    fillNumber(contacts: Partial<IProfile>) {
-
-    }
-
-    fillEmail(contacts: Partial<IProfile>) {
+    fillNumber(contacts: Partial<IProfile>): void{
 
     }
 
-    fillPayType(order: Partial<IOrder>) {
+    fillEmail(contacts: Partial<IProfile>): void {
 
     }
 
-    fillAddressDelivery(order: Partial<IOrder>) {
+    fillPayType(order: Partial<IOrder>): void {
+
+    }
+
+    fillAddressDelivery(order: Partial<IOrder>): void {
 
     }
 
 
     async orderTickets(): Promise<IOrderResult> {
+        return;
     }
 }
 
