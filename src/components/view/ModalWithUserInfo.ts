@@ -1,5 +1,6 @@
 import {Modal} from "../common/Modal";
 import {IEvents} from "../base/events";
+import {state} from "../../utils/constants";
 
 interface IModalWithUserInfo {
     valid: boolean;
@@ -45,7 +46,7 @@ export class ModalWithUserInfo extends Modal<IModalWithUserInfo> {
         });
         this.submitButton.addEventListener('click', (evt) => {
             evt.preventDefault();
-            this.events.emit(`user-info:submit`);
+            this.events.emit(state.userInfoSubmit);
         });
     }
 

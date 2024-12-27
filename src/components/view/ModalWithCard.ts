@@ -1,6 +1,6 @@
 import {Modal} from "../common/Modal";
 import {IEvents} from "../base/events";
-import {CDN_URL} from "../../utils/constants";
+import {CDN_URL, state} from "../../utils/constants";
 
 interface IModalWithCard {
     currentCard: {
@@ -34,7 +34,7 @@ export class ModalWithCard extends Modal<IModalWithCard> {
         this._placeToBasketButton = this.container.querySelector('.button');
         this._placeToBasketButton.addEventListener('click', (evt) => {
             evt.preventDefault();
-            this.events.emit(`card:submit`, this.getInputValues());
+            this.events.emit(state.cardSubmit, this.getInputValues());
         });
     }
 

@@ -1,5 +1,6 @@
 import {IEvents} from "../base/events";
 import {Modal} from "../common/Modal";
+import {state} from "../../utils/constants";
 
 interface IModalWithOrder {
     cards?: string[];
@@ -29,7 +30,7 @@ export class ModalWithOrder extends Modal<IModalWithOrder> {
         this._total = actions.querySelector('.basket__price');
         this._orderButtonElement.addEventListener('click', (evt) => {
             evt.preventDefault();
-            this.events.emit('order:submit', this.getOrder());
+            this.events.emit(state.orderSubmit, this.getOrder());
         });
         this._items.forEach(card => {
             card.remove();
@@ -80,7 +81,7 @@ export class ModalWithOrder extends Modal<IModalWithOrder> {
             });
         });
 
-        this.events.emit('order:itemsCountUpdate');
+        this.events.emit(state.orderItemsCountUpdate);
     }
 
     getOrder(){

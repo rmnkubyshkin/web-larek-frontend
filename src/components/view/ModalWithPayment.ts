@@ -1,5 +1,6 @@
 import {Modal} from "../common/Modal";
 import {IEvents} from "../base/events";
+import {state} from "../../utils/constants";
 
 interface IModalWithPayment {
     valid?: boolean;
@@ -38,7 +39,7 @@ export class ModalWithPayment extends Modal<IModalWithPayment> {
         });
         this.submitButton.addEventListener('click', (evt) => {
             evt.preventDefault();
-            this.events.emit(`payment:submit`);
+            this.events.emit(state.paymentSubmit);
         });
 
         this._form.addEventListener('input', (event: InputEvent) => {

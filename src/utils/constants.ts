@@ -7,3 +7,25 @@ export const settings = {
         'Content-Type': 'application/json',
     },
 };
+
+export const state = {
+    initialDateLoaded :"initialData:loaded",
+    cardsChanged: "cards:changed",
+    cardSelect: "card:select",
+    cardDelete: "card:delete",
+    cardSubmit: "card:submit",
+    orderSubmit: "order:submit",
+    orderItemsCountUpdate: "order:itemsCountUpdate",
+    orderComplete: "order:complete",
+    paymentTypeSelect: "payment:paymentTypeSelect",
+    paymentAddressEntered: "payment:addressEntered",
+    paymentSubmit: "payment:submit",
+    userInfoInput: "user-info:input",
+    userInfoSubmit: "user-info:submit",
+}
+
+
+
+
+
+

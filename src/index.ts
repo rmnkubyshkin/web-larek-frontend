@@ -5,7 +5,7 @@ import {Order} from "./components/model/Order";
 import {LarekAPI} from "./components/LarekAPI";
 import {IApi} from "./types";
 import {Api} from "./components/base/api";
-import {API_URL, settings} from "./utils/constants";
+import {API_URL, settings, state} from "./utils/constants";
 import {CardView} from "./components/view/CardView";
 import {CardsContainer} from "./components/view/CardsContainer";
 import {cloneTemplate} from "./utils/utils";
@@ -41,13 +41,13 @@ headerBasket.addEventListener('click', () => {
 api.getCards()
     .then(r =>  {
         cardData.items = r;
-        events.emit('initialData:loaded', cardData.items);
+        events.emit(state.initialDateLoaded, cardData.items);
     })
     .catch((err) => {
         console.error(err);
     });
 
-events.on('initialData:loaded', () => {
+events.on(state.initialDateLoaded, () => {
     const arrayCards: HTMLElement[] = [];
     cardData.items.map((card) => {
         const cardInstant = new CardView(cloneTemplate(cardCatalogTemplate), events);
@@ -56,7 +56,7 @@ events.on('initialData:loaded', () => {
     return cardContainer.render({catalog: arrayCards});
 });
 
-events.on('card:select', (data: {card: CardView}) => {
+events.on(state.cardSelect, (data: {card: CardView}) => {
     const {card} = data;
     const {id, image, price, category, title, description} = cardData.getCard(card.id);
     cardData.preview = card.id;
@@ -69,11 +69,11 @@ let currentPayment: string ="";
 let currentPhone: string ="";
 let currentEmail: string ="";
 
-events.on('payment:paymentTypeSelect', (data: {name:string, value:string}) => {
+events.on(state.paymentTypeSelect, (data: {name:string, value:string}) => {
     currentPayment = data.value;
 });
 
-events.on('payment:addressEntered', (data: {field:string, value:string}) => {
+events.on(state.paymentAddressEntered, (data: {field:string, value:string}) => {
     currentAddress = data.value;
     const error = {
         field: data.field,
@@ -84,7 +84,7 @@ events.on('payment:addressEntered', (data: {field:string, value:string}) => {
     modalPayment.render({error});
 });
 
-events.on('payment:submit', () => {
+events.on(state.paymentSubmit, () => {
     orderData.address = currentAddress;
     if (currentPayment) {
         orderData.payment = currentPayment;
@@ -93,7 +93,7 @@ events.on('payment:submit', () => {
     }
 });
 
-events.on('user-info:input', (data: {field:string, value:string}) => {
+events.on(state.userInfoInput, (data: {field:string, value:string}) => {
     let error = {}
     if (data.field == "email") {
         currentEmail = data.value;
@@ -114,19 +114,19 @@ events.on('user-info:input', (data: {field:string, value:string}) => {
     modalUserinfo.render({error});
 });
 
-events.on('user-info:submit', () => {
+events.on(state.userInfoSubmit, () => {
     modalUserinfo.close();
     orderData.phone = currentPhone;
     orderData.email = currentEmail;
     orderData.updateNanCostCard();
     api.placeAnOrder(orderData).then((response) => {
         modalConfirm.description = response.total;
-        modalConfirm.open();
+        modalConfirm.container.classList.add('modal_active');
     })
 
 });
 
-events.on('card:submit', () => {
+events.on(state.cardSubmit, () => {
     modalCard.close();
     const {id, price, title } = cardData.getCard(cardData.preview);
     orderData.addCard(cardData.getCard(cardData.preview));
@@ -138,19 +138,19 @@ events.on('card:submit', () => {
     modalOrder.open();
 });
 
-events.on('card:deleted', (data: {card: CardView}) => {
+events.on(state.cardDelete, (data: {card: CardView}) => {
     orderData.removeCard(cardData.getCard(data.card.id));
     modalOrder.basketCount = orderData.count;
     modalOrder.render({cards: orderData.items, total: orderData.total});
 });
 
-events.on('order:submit', () => {
+events.on(state.orderSubmit, () => {
     modalOrder.close();
     modalPayment.open();
     modalPayment.render()
 });
 
-events.on('payment:submit', () => {
+events.on(state.paymentSubmit, () => {
     const defaultPayment = document.querySelector('.button_alt_active');
     orderData.payment = defaultPayment.textContent;
 
@@ -158,14 +158,13 @@ events.on('payment:submit', () => {
     modalUserinfo.open();
 })
 
-events.on('order:itemsCountUpdate', () => {
+events.on(state.orderItemsCountUpdate, () => {
     modalOrder.basketCount = orderData.count;
 });
 
-events.on('order:complete', () => {
+events.on(state.orderComplete, () => {
     orderData.items = [];
     orderData.buyingCards = [];
     modalOrder.render();
     location.reload();
-    modalConfirm.close();
 });

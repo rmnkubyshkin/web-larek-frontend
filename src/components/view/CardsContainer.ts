@@ -13,6 +13,7 @@ export class CardsContainer extends Component<ICardsContainer> {
     constructor(protected container: HTMLElement, ) {
         super(container);
     }
+
     set items(items: Partial<CardView>) {
     }
 

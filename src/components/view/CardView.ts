@@ -1,7 +1,7 @@
 import {IEvents} from "../base/events";
 import {ICard} from "../../types";
 import {Component} from "../base/Component";
-import {CDN_URL} from "../../utils/constants";
+import {CDN_URL, state} from "../../utils/constants";
 
 export class CardView extends Component<ICard>{
     protected events: IEvents;
@@ -23,11 +23,11 @@ export class CardView extends Component<ICard>{
         if (this.container.querySelector('.card__button')) {
             const removeButton  = this.container.querySelector('.card__button');
             removeButton.addEventListener('click', () => {
-                this.events.emit('card:deleted', {card: this})
+                this.events.emit(state.cardDelete, {card: this})
             });
         } else {
             this.container.addEventListener('click', () => {
-                this.events.emit('card:select', {card: this})
+                this.events.emit(state.cardSelect, {card: this})
             });
         }
 
